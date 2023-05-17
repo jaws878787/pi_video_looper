@@ -223,7 +223,12 @@ class VideoLooper:
             if not os.path.exists(path) or not os.path.isdir(path):
                 continue
 
-            print('TTTTTTTTTTTTTTEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTT')
+            with open('readme.txt', 'a') as f:
+                f.write('readme')
+                
+            with open('logger.txt', 'a') as f:
+                f.write(path)
+                
             for x in os.listdir(path):
                 # Ignore hidden files (useful when file loaded on usb key from an OSX computer
                 if x[0] != '.' and re.search('\.({0})$'.format(self._extensions), x, flags=re.IGNORECASE):
