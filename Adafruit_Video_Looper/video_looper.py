@@ -223,11 +223,11 @@ class VideoLooper:
             if not os.path.exists(path) or not os.path.isdir(path):
                 continue
 
-            logpath = path.replace('*', 'logger.txt')
+            path_base = path[:-1]
+            file_path = os.path.join(path_base, 'logger.txt')
             
-            with open(logpath, 'a') as f:
-                f.write('readme')
-                f.write(path)
+            with open(file_path, 'a') as f:
+                f.write('Testing')
                 
                 
             for x in os.listdir(path):
