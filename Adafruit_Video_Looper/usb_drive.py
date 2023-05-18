@@ -35,7 +35,7 @@ class USBDriveReader:
     usb_paths = []
     
     # Get a list of all mounted USB drives
-    mounted_drives = [drive for drive in glob.glob('/media/*') if os.path.ismount(drive)]
+    mounted_drives = self.search_paths
     
     # Search for the specified folder on each mounted USB drive
     for drive in mounted_drives:
