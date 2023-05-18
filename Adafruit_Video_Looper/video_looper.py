@@ -13,6 +13,7 @@ import time
 import pygame
 import threading
 from datetime import datetime
+import random
 
 from .alsa_config import parse_hw_device
 from .model import Playlist, Movie
@@ -211,11 +212,17 @@ class VideoLooper:
             return self._build_playlist_from_all_files()
 
     def _build_playlist_from_all_files(self):
-        """Search all the file reader paths for movie files with the provided
-        extensions.
-        """
+        schedule = self.schedule_config()
+        return Playlist(schedule)
+    
+    def schedule_config(self):
+        shows = self._build_showlist('shows')
+        commercials = self._build_showlist('commercials')
+        break_size = 3
+        return self.create_schedule(shows, commercials, break_size)
+       
+    def _build_showlist(self, folder_name):
         # Get list of paths to search from the file reader.
-        folder_name = 'shows'
         paths = self._reader.search_usb_paths(folder_name)
         #paths = self._reader.search_paths()
         # Enumerate all movie files inside those paths.
@@ -235,25 +242,22 @@ class VideoLooper:
                         repeat = 1
                     basename, extension = os.path.splitext(x)
                     movies.append(Movie('{0}/{1}'.format(path.rstrip('/'), x), basename, repeat))
-
-            # Get the ALSA hardware volume from the file in the usb key
-            if self._alsa_hw_vol_file:
-                alsa_hw_vol_file_path = '{0}/{1}'.format(path.rstrip('/'), self._alsa_hw_vol_file)
-                if os.path.exists(alsa_hw_vol_file_path):
-                    with open(alsa_hw_vol_file_path, 'r') as alsa_hw_vol_file:
-                        alsa_hw_vol_string = alsa_hw_vol_file.readline()
-                        self._alsa_hw_vol = alsa_hw_vol_string
-                    
-            # Get the video volume from the file in the usb key
-            if self._sound_vol_file:
-                sound_vol_file_path = '{0}/{1}'.format(path.rstrip('/'), self._sound_vol_file)
-                if os.path.exists(sound_vol_file_path):
-                    with open(sound_vol_file_path, 'r') as sound_file:
-                        sound_vol_string = sound_file.readline()
-                        if self._is_number(sound_vol_string):
-                            self._sound_vol = int(float(sound_vol_string))
-        # Create a playlist with the sorted list of movies.
-        return Playlist(sorted(movies))
+        return movies                 
+        
+    def create_schedule(self, shows, commercials, break_size):
+        schedule = []
+    
+        # Shuffle the shows list to randomize the order
+        random.shuffle(shows)
+    
+        for show in shows:
+            schedule.append(show)  # Add the show to the schedule
+        
+            # Pick break_size number of unique random commercials
+            unique_commercials = random.sample(commercials, break_size)
+            schedule.extend(unique_commercials)  # Add the commercials to the schedule
+    
+        return schedule
 
     def _blank_screen(self):
         """Render a blank screen filled with the background color and optional the background image."""
