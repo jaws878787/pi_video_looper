@@ -215,20 +215,14 @@ class VideoLooper:
         extensions.
         """
         # Get list of paths to search from the file reader.
-        paths = self._reader.search_paths()
+        folder_name = 'shows'
+        paths = self._reader.search_usb_paths(folder_name)
         # Enumerate all movie files inside those paths.
         movies = []
         for path in paths:
             # Skip paths that don't exist or are files.
             if not os.path.exists(path) or not os.path.isdir(path):
                 continue
-
-            path_base = path[:-1]
-            file_path = os.path.join(path_base, 'logger.txt')
-            
-            with open(file_path, 'a') as f:
-                f.write('Testing')
-                
                 
             for x in os.listdir(path):
                 # Ignore hidden files (useful when file loaded on usb key from an OSX computer
