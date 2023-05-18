@@ -30,6 +30,21 @@ class USBDriveReader:
         self._mounter.mount_all()
         return glob.glob(self._mount_path + '*')
 
+    def search_usb_paths(folder_name):
+    """Return a list of paths to the specified folder on mounted USB drives."""
+    usb_paths = []
+    
+    # Get a list of all mounted USB drives
+    mounted_drives = [drive for drive in glob.glob('/media/*') if os.path.ismount(drive)]
+    
+    # Search for the specified folder on each mounted USB drive
+    for drive in mounted_drives:
+        folder_path = os.path.join(drive, folder_name)
+        if os.path.exists(folder_path) and os.path.isdir(folder_path):
+            usb_paths.append(folder_path)
+    
+    return usb_paths
+
     def is_changed(self):
         """Return true if the file search paths have changed, like when a new
         USB drive is inserted.
