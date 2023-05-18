@@ -216,7 +216,7 @@ class VideoLooper:
         """
         # Get list of paths to search from the file reader.
         folder_name = 'shows'
-        paths = self._reader.search_usb_paths(folder_name)
+        paths = self._reader.search_paths()
         # Enumerate all movie files inside those paths.
         movies = []
         for path in paths:

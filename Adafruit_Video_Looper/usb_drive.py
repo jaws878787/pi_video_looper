@@ -2,6 +2,7 @@
 # Author: Tony DiCola
 # License: GNU GPLv2, see LICENSE.txt
 import glob
+import os
 
 from .usb_drive_mounter import USBDriveMounter
 
@@ -43,7 +44,7 @@ class USBDriveReader:
             if os.path.exists(folder_path) and os.path.isdir(folder_path):
                 usb_paths.append(folder_path)
     
-    return usb_paths
+        return usb_paths
 
     def is_changed(self):
         """Return true if the file search paths have changed, like when a new
