@@ -31,17 +31,17 @@ class USBDriveReader:
         return glob.glob(self._mount_path + '*')
 
     def search_usb_paths(self, folder_name):
-    """Return a list of paths to the specified folder on mounted USB drives."""
-    usb_paths = []
+        """Return a list of paths to the specified folder on mounted USB drives."""
+        usb_paths = []
     
-    # Get a list of all mounted USB drives
-    mounted_drives = self.search_paths
+        # Get a list of all mounted USB drives
+        mounted_drives = self.search_paths
     
-    # Search for the specified folder on each mounted USB drive
-    for drive in mounted_drives:
-        folder_path = os.path.join(drive, folder_name)
-        if os.path.exists(folder_path) and os.path.isdir(folder_path):
-            usb_paths.append(folder_path)
+        # Search for the specified folder on each mounted USB drive
+        for drive in mounted_drives:
+            folder_path = os.path.join(drive, folder_name)
+            if os.path.exists(folder_path) and os.path.isdir(folder_path):
+                usb_paths.append(folder_path)
     
     return usb_paths
 
