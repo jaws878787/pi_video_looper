@@ -30,7 +30,7 @@ class USBDriveReader:
         self._mounter.mount_all()
         return glob.glob(self._mount_path + '*')
 
-    def search_usb_paths(folder_name):
+    def search_usb_paths(self, folder_name):
     """Return a list of paths to the specified folder on mounted USB drives."""
     usb_paths = []
     
